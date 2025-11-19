@@ -58,10 +58,21 @@ To add another format, simply create a new `Benchmark...` function.
 ## Example Output
 
 ```
-BenchmarkToonMarshal-12        8    142825750 ns/op   48315866 B/op    999951 allocs/op
-BenchmarkGotoonMarshal-12      4    318810069 ns/op   72130438 B/op   1099957 allocs/op
-BenchmarkJsonMarshal-12       49     24299468 ns/op    5299191 B/op         4 allocs/op
-BenchmarkProtoMarshal-12     100     13222923 ns/op    2654362 B/op         2 allocs/op
+>>> make bench
+go test -bench=. -benchmem ./cmd/tut
+goos: linux
+goarch: amd64
+pkg: github.com/piraz/toontest/cmd/tut
+cpu: AMD Ryzen 5 1600 Six-Core Processor
+BenchmarkToonMarshal-12                7         149557411 ns/op        48315452 B/op     999951 allocs/op
+BenchmarkToonUnmarshal-12              6         172380953 ns/op        69058568 B/op    1248966 allocs/op
+BenchmarkGotoonMarshal-12              3         337262098 ns/op        72150930 B/op    1099958 allocs/op
+BenchmarkJsonMarshal-12               50          25097259 ns/op         5963423 B/op          5 allocs/op
+BenchmarkJsonUnmarshal-12              8         129124964 ns/op         5171892 B/op     200010 allocs/op
+BenchmarkProtoMarshal-12              80          13132078 ns/op         2654402 B/op          2 allocs/op
+BenchmarkProtoUnmarshal-12            25          45326514 ns/op        14892208 B/op     300028 allocs/op
+PASS
+ok      github.com/piraz/toontest/cmd/tut       7.981s
 ```
 
 ## Requirements
