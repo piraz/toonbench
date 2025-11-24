@@ -1,0 +1,15 @@
+# Yarn/Node
+node_modules/
+dist/
+yarn.lock
+package-lock.json
+yarn-error.log
+.yarn
+.yarnrc.yml
+
+# Idea metadata
+.idea/
+
+# Less
+stylesheets/*.css
+stylesheets/*.css.map

@@ -65,9 +65,20 @@ func BenchmarkJsonMarshal(b *testing.B) {
 	}
 }
 
+var data, _ = json.Marshal(samplePaylod)
+
 func BenchmarkJsonUnmarshal(b *testing.B) {
-	data, _ := json.Marshal(samplePaylod)
 	var out Payload
+	b.ResetTimer()
+	for b.Loop() {
+		if err := json.Unmarshal(data, &out); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func BenchmarkJsonUnmarshalMap(b *testing.B) {
+	var out map[string]any
 	b.ResetTimer()
 	for b.Loop() {
 		if err := json.Unmarshal(data, &out); err != nil {
@@ -89,7 +100,7 @@ func prepareProtoPayload(n int) *PayloadP {
 }
 
 func BenchmarkProtoMarshal(b *testing.B) {
-	payload := prepareProtoPayload(100_000)
+	var payload = prepareProtoPayload(100_000)
 	b.ResetTimer()
 	for b.Loop() {
 		_, err := proto.Marshal(payload)

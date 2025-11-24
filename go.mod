@@ -1,4 +1,4 @@
-module github.com/piraz/toontest
+module github.com/piraz/toonbench
 
 go 1.24.6
 

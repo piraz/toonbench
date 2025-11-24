@@ -8,6 +8,7 @@ message UserP {
   int32 id = 1;
   string name = 2;
   string role = 3;
+  string banana =4;
 }
 
 message PayloadP { 
