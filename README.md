@@ -1,6 +1,6 @@
-# toontest
+# toonbench
 
-`toontest` is a Go benchmarking project from [piraz](https://github.com/piraz)
+`toonbench` is a Go benchmarking project from [piraz](https://github.com/piraz)
 designed to compare serialization and deserialization performance across
 different formats: Toon, Gotoon, JSON, and Protobuf.
 
@@ -21,8 +21,8 @@ allocations for each encoder/decoder.
 First, clone this repository:
 
 ```sh
-git clone https://github.com/piraz/toontest.git
-cd toontest
+git clone https://github.com/piraz/toonbench.git
+cd toonbench
 ```
 
 Make sure you have your Go environment set up and dependencies installed.
@@ -62,7 +62,7 @@ To add another format, simply create a new `Benchmark...` function.
 go test -bench=. -benchmem ./cmd/tut
 goos: linux
 goarch: amd64
-pkg: github.com/piraz/toontest/cmd/tut
+pkg: github.com/piraz/toonbench/cmd/tut
 cpu: AMD Ryzen 5 1600 Six-Core Processor
 BenchmarkToonMarshal-12                7         149557411 ns/op        48315452 B/op     999951 allocs/op
 BenchmarkToonUnmarshal-12              6         172380953 ns/op        69058568 B/op    1248966 allocs/op
@@ -72,7 +72,7 @@ BenchmarkJsonUnmarshal-12              8         129124964 ns/op         5171892
 BenchmarkProtoMarshal-12              80          13132078 ns/op         2654402 B/op          2 allocs/op
 BenchmarkProtoUnmarshal-12            25          45326514 ns/op        14892208 B/op     300028 allocs/op
 PASS
-ok      github.com/piraz/toontest/cmd/tut       7.981s
+ok      github.com/piraz/toonbench/cmd/tut       7.981s
 ```
 
 ## Requirements
