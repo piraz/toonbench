@@ -13,3 +13,8 @@ yarn-error.log
 # Less
 stylesheets/*.css
 stylesheets/*.css.map
+
+# Protobuf
+user.pb.go
+src/compiled_protos.cjs
+src/user_pb.cjs

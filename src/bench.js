@@ -1,12 +1,26 @@
 import Benchmark from "benchmark";
 import { encode, decode } from "@toon-format/toon";
 
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const proto = require("./user_pb.cjs");
+const PayloadP = proto.toonbench?.PayloadP || proto.PayloadP;
+const UserP = proto.toonbench?.UserP || proto.UserP;
+
+const compiled = require("./compiled_protos.cjs");
+const toonbench = compiled.toonbench ?? compiled.default ?? compiled;
+
 if (typeof global.gc !== 'function') {
     console.error('Run node with --expose-gc to get reliable memory numbers: node --expose-gc src/bench.js');
     process.exit(1);
 }
 
-const NUM_USERS = 100_000;
+if (!PayloadP || !UserP) {
+  console.error('Não encontrou PayloadP/UserP nas exports de user_pb.js/cjs. Keys:', Object.keys(proto));
+  process.exit(1);
+}
+
+const NUM_USERS = 5_000;
 
 const roles = ["admin", "user", "moderator", "superuser"]
 
@@ -22,10 +36,45 @@ function generatePayload(n) {
     return { users };
 }
 
+function generatePayloadProtoGoogle(n) {
+    const payload = new PayloadP()
+    const users = [];
+    for (let i= 0; i < n; i++ ) {
+        const user = new UserP();
+        user.setId(i + 1);
+        user.setName("");
+        user.setRole(roles[i % 4]);
+        users.push(user)
+    }
+    payload.setUsersList(users)
+    return payload;
+}
+
+function generatePayloadProtobufJs(n) {
+    const users = [];
+    for (let i= 0; i < n; i++ ) {
+        const user = toonbench.UserP.create({
+            "id": i+1,
+            "name": "",
+            "role": roles[i % 4]
+        });
+        users.push(user);
+    }
+    const payload = toonbench.PayloadP.create({
+        "users": users
+    });
+    return payload;
+}
 
 const payload  = generatePayload(NUM_USERS);
 const jsonStr = JSON.stringify(payload);
 const toonStr = encode(payload);
+
+const payloadPGoogle = generatePayloadProtoGoogle(NUM_USERS);
+const payloadBufGoogle = payloadPGoogle.serializeBinary();
+
+const payloadPJs = generatePayloadProtobufJs(NUM_USERS);
+const payloadBuf = toonbench.PayloadP.encode(payloadPJs).finish();
 
 function formatMB(bytes) {
     return (bytes / 1024 / 1024).toFixed(3);
@@ -62,10 +111,16 @@ function runSingleBenchmark(name, fn) {
                 // TODO: fix memory utilization
                 const bPerOp = executed > 0 ? (memDelta / executed) : NaN;
 
-                console.log(`\nRESULT: ${name}`);
-                console.log(`  ops/sec: ${hz.toFixed(2)}`);
-                if (!Number.isNaN(nsOp)) console.log(`  ns/op: ${Math.round(nsOp).toLocaleString()}`);
-                console.log(`  executed (approx): ${executed}`);
+                let nsOpRes = NaN
+                if (!Number.isNaN(nsOp)) nsOpRes = Math.round(nsOp).toLocaleString();
+                let firstTabs = "\t\t\t";
+                if (name.length > 15) {
+                    firstTabs = "\t\t";
+                }
+                if (name.length > 20) {
+                    firstTabs = "\t";
+                }
+                console.log(`${name}${firstTabs}ops/sec: ${hz.toFixed(2)}\tns/op: ${nsOpRes}\texecuted (approx): ${executed}`);
                 // TODO: fix memory utilization
                 // console.log(`  mem delta: ${memDelta} bytes (${formatMB(memDelta)} MB)`);
                 // console.log(`  approx B/op: ${Number.isNaN(bPerOp) ? 'N/A' : Math.round(bPerOp) + ' bytes'}`);
@@ -106,17 +161,39 @@ async function main() {
             name: 'TOON.decode',
             fn: () => decode(toonStr)
         },
+        {
+            name: 'google-protobuf serializeBin',
+            fn: () => payloadPGoogle.serializeBinary()
+        },
+        {
+            name: 'google-protobuf deserializeBin',
+            fn: () => PayloadP.deserializeBinary(payloadBufGoogle)
+        },
+        {
+            name: 'protobufjs encode.finish',
+            fn: () => toonbench.PayloadP.encode(payloadPJs).finish()
+        },
+        {
+            name: 'protobufjs decode',
+            fn: () => toonbench.PayloadP.decode(payloadBuf)
+        },
     ];
 
     const results = [];
+    const totalStart = process.hrtime.bigint();
+
     for (const t of tests) {
         // Run each benchmark isolated to better measure memory impact
-        console.log(`\n--- Running: ${t.name} ---`);
+        // console.log(`\n--- Running: ${t.name} ---`);
         const r = await runSingleBenchmark(t.name, t.fn);
         results.push(r);
     }
 
+    const totalEnd = process.hrtime.bigint();
+    const totalMs = Number(totalEnd - totalStart) / 1e6;
+
     console.log('\nAll done.');
+    console.log(`Total benchmark wall-clock time: ${totalMs.toFixed(0)} ms (${(totalMs/1000).toFixed(3)} s)`);
     // You can further process 'results' to build a table if desired.
 }
 

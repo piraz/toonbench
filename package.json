@@ -4,13 +4,7 @@
     "description": "TOON Benchmark",
     "main": "src/index.js",
     "type": "module",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "yarn": "npm run yarn:clean && npm run yarn:v2 && npm run yarn:install",
-        "yarn:install": "yarn install",
-        "yarn:clean": "rm -rf yarn.lock .yarn .yarnrc.yml .next node_modules",
-        "yarn:v2": "yarn set version berry && yarn config set nodeLinker node-modules"
-    },
+    "homepage": "https://github.com/piraz/toonbench#readme",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/piraz/toonbench.git"
@@ -26,10 +20,19 @@
     "bugs": {
         "url": "https://github.com/piraz/toonbench/issues"
     },
-    "homepage": "https://github.com/piraz/toonbench#readme",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "yarn": "npm run yarn:clean && npm run yarn:v2 && npm run yarn:install",
+        "yarn:install": "yarn install",
+        "yarn:clean": "rm -rf yarn.lock .yarn .yarnrc.yml .next node_modules",
+        "yarn:v2": "yarn set version berry && yarn config set nodeLinker node-modules"
+    },
     "dependencies": {
         "@toon-format/toon": "1.3.0",
-        "benchmark": "2.1.4"
+        "benchmark": "2.1.4",
+        "google-protobuf": "4.0.1",
+        "protobufjs": "7.5.4",
+        "protobufjs-cli": "1.1.3"
     },
     "packageManager": "yarn@4.12.0"
 }
