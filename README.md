@@ -44,7 +44,7 @@ Benchmarks report:
 - elapsed wall-clock and approximate memory delta in JS (when run with
   --expose-gc)
 
-** Important note about TOON **
+**Important note about TOON**
 - TOON is an emerging, specialized format optimized for sending data to large
   language models (LLMs). It is designed to reduce token usage and improve
   payload efficiency for LLM inputs.
@@ -55,6 +55,8 @@ Benchmarks report:
 - Recommendation: use TOON when your goal is compact, token‑efficient payloads
   for LLM consumption. For inter-service interoperability, persistence, or
       public APIs, prefer established formats (JSON, Protobuf, etc.).
+- From official format project (when not to use TOON)
+  [https://github.com/toon-format/toon?tab=readme-ov-file#when-not-to-use-toon]
 
 ---
 
