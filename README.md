@@ -30,18 +30,31 @@ Table of contents
 This project compares the performance of different serialization formats and
 implementations in both Go and JavaScript:
 
-- Toon (Go and JS)
-- Gotoon (Go, if present)
-- encoding/json (Go standard library)
+- Toon (Go and JS)  
+- Gotoon (Go, if present)  
+- encoding/json (Go standard library)  
 - Protocol Buffers:
-  - Go: `protoc` + `protoc-gen-go`
-  - JS: `protobufjs` (pbjs) and `google-protobuf` (protoc JS)
-- Benchmarks report:
-  - throughput (ops/sec)
-  - time per operation (ns/op)
-  - memory used (B/op) and heap allocations (allocs/op) in Go
-  - elapsed wall-clock and approximate memory delta in JS (when run with
-    --expose-gc)
+  - Go: protoc + protoc-gen-go
+  - JS: protobufjs (pbjs) and google-protobuf (protoc JS)
+
+Benchmarks report:
+- throughput (ops/sec)
+- time per operation (ns/op)
+- memory used (B/op) and heap allocations (allocs/op) in Go
+- elapsed wall-clock and approximate memory delta in JS (when run with
+  --expose-gc)
+
+** Important note about TOON **
+- TOON is an emerging, specialized format optimized for sending data to large
+  language models (LLMs). It is designed to reduce token usage and improve
+  payload efficiency for LLM inputs.
+- TOON is not intended as a general-purpose interoperability format between
+  services, servers, or heterogeneous systems. It is not (yet) a drop‑in
+  replacement for formats like JSON or Protocol Buffers when you need robust
+  cross-language, cross-service interoperability.
+- Recommendation: use TOON when your goal is compact, token‑efficient payloads
+  for LLM consumption. For inter-service interoperability, persistence, or
+      public APIs, prefer established formats (JSON, Protobuf, etc.).
 
 ---
 
