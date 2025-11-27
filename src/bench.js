@@ -29,7 +29,7 @@ function generatePayload(n) {
     for (let i= 0; i < n; i++ ) {
         users.push({
             id: i + 1,
-            name: ``,
+            name: `User ${i+1}`,
             role: roles[i % 4]
         });
     }
@@ -42,7 +42,7 @@ function generatePayloadProtoGoogle(n) {
     for (let i= 0; i < n; i++ ) {
         const user = new UserP();
         user.setId(i + 1);
-        user.setName("");
+        user.setName(`User ${i+1}`);
         user.setRole(roles[i % 4]);
         users.push(user)
     }
@@ -55,7 +55,7 @@ function generatePayloadProtobufJs(n) {
     for (let i= 0; i < n; i++ ) {
         const user = toonbench.UserP.create({
             "id": i+1,
-            "name": "",
+            "name": `User ${i+1}`,
             "role": roles[i % 4]
         });
         users.push(user);
