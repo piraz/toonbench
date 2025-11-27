@@ -37,6 +37,8 @@ prepare: ## Prepara o ambiente para o benchmark
 	@printf "\033[1;34m=========================================\033[0m\n"
 	@printf "\033[1;32m Generating protobuf artifacts (prepare)\033[0m\n"
 	@printf "\033[1;34m=========================================\033[0m\n\n"
+	@echo "-> protoc go_out -> ."
+	@protoc --go_out=. user.proto
 	@echo "-> go mod tidy -> prepare go env"
 	@go mod tidy
 	@echo "-> pbjs (static commonjs) -> ./src/compiled_protos.js"
@@ -48,8 +50,6 @@ prepare: ## Prepara o ambiente para o benchmark
 	@echo "-> protoc js_out (import_style=commonjs,binary) -> ./src"
 	@protoc --js_out=import_style=commonjs,binary:./src user.proto
 	@mv ./src/user_pb.js ./src/user_pb.cjs
-	@echo "-> protoc go_out -> ."
-	@protoc --go_out=. user.proto
 	@printf "\n\033[1;34mDone.\033[0m\n"
 
 go-bench: ## Executar benchmarks em go(gobench)
