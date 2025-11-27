@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"runtime"
 	"testing"
 
 	"github.com/alpkeskin/gotoon"
@@ -12,7 +13,16 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+const numUsers = 5_000
+
 var roles = []string{"admin", "user", "moderator", "superuser"}
+
+func init() {
+	fmt.Println("GO TOON serialization microbenchmark")
+	fmt.Printf("NUM_USERS: %d\n", numUsers)
+	fmt.Printf("NumCPU: %d\n", runtime.NumCPU())
+	fmt.Printf("GOMAXPROCS: %d\n", runtime.GOMAXPROCS(0))
+}
 
 func prepareToonPayload(numUsers int) Payload {
 	users := make([]User, 0, numUsers)
@@ -26,7 +36,7 @@ func prepareToonPayload(numUsers int) Payload {
 	return Payload{Users: users}
 }
 
-var samplePaylod = prepareToonPayload(100_000)
+var samplePaylod = prepareToonPayload(numUsers)
 
 func BenchmarkToonMarshal(b *testing.B) {
 	for b.Loop() {
@@ -102,7 +112,7 @@ func prepareProtoPayload(n int) *toonbench.PayloadP {
 }
 
 func BenchmarkProtoMarshal(b *testing.B) {
-	var payload = prepareProtoPayload(100_000)
+	var payload = prepareProtoPayload(numUsers)
 	b.ResetTimer()
 	for b.Loop() {
 		_, err := proto.Marshal(payload)
@@ -113,7 +123,7 @@ func BenchmarkProtoMarshal(b *testing.B) {
 }
 
 func BenchmarkProtoUnmarshal(b *testing.B) {
-	payload := prepareProtoPayload(100_000)
+	payload := prepareProtoPayload(numUsers)
 	data, _ := proto.Marshal(payload)
 	var out toonbench.PayloadP
 	b.ResetTimer()

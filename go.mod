@@ -1,6 +1,6 @@
 module github.com/piraz/toonbench
 
-go 1.23
+go 1.24
 
 require (
 	github.com/alpkeskin/gotoon v0.1.1

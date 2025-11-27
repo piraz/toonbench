@@ -57,7 +57,15 @@ go-bench: ## Executar benchmarks em go(gobench)
 	@printf "\033[1;34m========================================\033[0m\n"
 	@printf "\033[1;33m Running Go benchmarks (gobench) \033[0m\n"
 	@printf "\033[1;34m========================================\033[0m\n\n"
-	@go test -bench=. -benchmem ./gobench
+	@go test -bench=. -benchmem -benchtime=1s ./gobench
+	@printf "\n\033[1;34mGo bench finished.\033[0m\n"
+
+go-bench-parallel: ## Executar parallel benchmarks em go(gobench)
+	@printf "\n"
+	@printf "\033[1;34m===============================================\033[0m\n"
+	@printf "\033[1;33m Running With Go Parallel benchmarks (gobench) \033[0m\n"
+	@printf "\033[1;34m===============================================\033[0m\n\n"
+	@go test -tags=parallel -bench=. -benchmem -benchtime=1s ./gobench
 	@printf "\n\033[1;34mGo bench finished.\033[0m\n"
 
 go-bench-short: ## Executar benchmarks em go(curto, benchtime=2x)
