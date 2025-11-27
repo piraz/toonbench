@@ -83,3 +83,11 @@ js-bench: ## Executar benchmarks em JavaScript (node)
 	@printf "\033[1;34m============================================\033[0m\n\n"
 	@node --expose-gc src/bench.js
 	@printf "\n\033[1;34mJS bench finished.\033[0m\n"
+
+py-bench: ## Executar benchmarks em Python
+	@printf "\n"
+	@printf "\033[1;34m==========================\033[0m\n"
+	@printf "\033[1;36m Running Python benchmark \033[0m\n"
+	@printf "\033[1;34m==========================\033[0m\n\n"
+	PYTHONPATH="." python toonbench/bench.py
+	@printf "\n\033[1;34mPython bench finished.\033[0m\n"

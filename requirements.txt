@@ -1,0 +1,4 @@
+git+https://github.com/toon-format/toon-python.git#egg=toon-format
+orjson==3.11.4
+ujson==5.11.0
+protobuf==6.33.1

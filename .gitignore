@@ -18,3 +18,8 @@ stylesheets/*.css.map
 user.pb.go
 src/compiled_protos.cjs
 src/user_pb.cjs
+user_pb2.py
+
+# Python
+*.py[cod]
+__pycache__
